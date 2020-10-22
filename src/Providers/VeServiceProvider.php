@@ -2,6 +2,7 @@
 
 namespace Bigmom\VeEditor\Providers;
 
+use Bigmom\VeEditor\Commands\PullVeEditor;
 use Bigmom\VeEditor\Managers\AssetManager;
 use Bigmom\VeEditor\Facades\Asset;
 use Illuminate\Support\Facades\Blade;
@@ -46,6 +47,12 @@ class VeServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/ve'),
         ], 'public');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                PullVeEditor::class,
+            ]);
+        }
 
         $this->app->singleton('asset', function ($app) {
             return new AssetManager;
