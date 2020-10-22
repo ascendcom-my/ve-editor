@@ -11,8 +11,8 @@ use Bigmom\VeEditor\Http\Controllers\TagController;
 use Bigmom\VeEditor\Http\Middleware\EnsureUserIsAuthorized;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('ve-editor')->name('ve-editor.')->middleware(['auth:sanctum', EnsureUserIsAuthorized::class])->group(function () {
-    Route::middleware(['web'])->group(function () {
+Route::prefix('ve-editor')->name('ve-editor.')->group(function () {
+    Route::middleware(['web', 'auth:sanctum', EnsureUserIsAuthorized::class])->group(function () {
         if (config('ve.main')) {
             Route::get('/', function () {
                 return redirect()->route('ve-editor.scene.getIndex');
@@ -48,7 +48,7 @@ Route::prefix('ve-editor')->name('ve-editor.')->middleware(['auth:sanctum', Ensu
             Route::post('/pull', [ContentController::class, 'pull'])->name('pull');
         }
     });
-    Route::middleware(['api'])->prefix('api')->name('api.')->group(function () {
+    Route::middleware(['api', 'auth:sanctum', EnsureUserIsAuthorized::class])->prefix('api')->name('api.')->group(function () {
         if (config('ve.main')) {
             Route::get('/pull', [APIController::class, 'getContent'])->name('getContent');
         }
