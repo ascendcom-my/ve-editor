@@ -1,0 +1,42 @@
+.full-screen {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.fixed-ratio {
+  background-color: black;
+}
+
+.fixed-ratio > * {
+  position: absolute;
+  width: var(--width);
+  height: var(--height);
+  left: 50%;
+  top: 50%;
+  --ratio: 1;
+  transform: translate(-50%, -50%) scale(var(--ratio), var(--ratio));
+}
+
+#toggle-mode {
+  position: fixed;
+  bottom: 2vw;
+  left: 2vw;
+  width: 3vw;
+  height: 3vw;
+  border-radius: 50%;
+  background: cyan;
+}
+
+#sidebar {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 100%;
+  width: 30%;
+  background-color: blue;
+}
+

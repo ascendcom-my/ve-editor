@@ -1,0 +1,27 @@
+{
+    "name": "bigmom/ve-editor",
+    "description": "Editor for Virtual Events along with an asset manager.",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Bigmom\\VeEditor\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bigmom\\VeEditor\\Providers\\VeServiceProvider"
+            ],
+            "aliases": {
+                "Asset": "Bigmom\\VeEditor\\Facades\\Asset"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.3",
+        "laravel/framework": "^8.0",
+        "laravel/sanctum": "^2.6"
+    }
+
+}
