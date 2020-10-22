@@ -78,6 +78,13 @@ class VeServiceProvider extends ServiceProvider
             $url = app('sasset')($path);
             return e($url);
         });
+        
+        Blade::directive('svg', function ($path) {
+            $svg = file_get_contents(app('sasset')($path));
+            $svg = preg_replace('/\<\?xml(.*)\?\>/', '', $svg);
+            $svg = preg_replace('/\<\!\-\-(.*)--\>/', '', $svg);
+            return $svg;
+        });
 
         $this->gate();
     }
