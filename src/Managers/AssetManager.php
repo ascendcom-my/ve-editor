@@ -53,6 +53,7 @@ class AssetManager
         AssetTemplate::truncate();
         Folder::truncate();
         Hotspot::truncate();
+        FolderHotspot::truncate();
         Placeholder::truncate();
         Scene::truncate();
         foreach ($result->get('asset') as $asset) {
