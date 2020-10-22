@@ -5,6 +5,7 @@ namespace Bigmom\VeEditor\Managers;
 use Bigmom\VeEditor\Models\Asset;
 use Bigmom\VeEditor\Models\AssetTemplate;
 use Bigmom\VeEditor\Models\Folder;
+use Bigmom\VeEditor\Models\FolderHotspot;
 use Bigmom\VeEditor\Models\Hotspot;
 use Bigmom\VeEditor\Models\Placeholder;
 use Bigmom\VeEditor\Models\Scene;
