@@ -8,6 +8,7 @@ use Bigmom\VeEditor\Models\Folder;
 use Bigmom\VeEditor\Models\Hotspot;
 use Bigmom\VeEditor\Models\Placeholder;
 use Bigmom\VeEditor\Models\Scene;
+use Illuminate\Support\Facades\DB;
 
 class AssetManager
 {
@@ -64,6 +65,9 @@ class AssetManager
         }
         foreach ($result->get('hotspot') as $hotspot) {
             Hotspot::create($hotspot);
+        }
+        foreach ($result->get('folder_hotspot') as $item) {
+            FolderHotspot::create($item);
         }
         foreach ($result->get('placeholder') as $placeholder) {
             Placeholder::create($placeholder);
