@@ -6,5 +6,6 @@
             @csrf
             <button type="submit">Pull</button>
         </form>
+        @if(session('success') || session('error')) {{ session('message') }} @endif
     </body>
 </html>

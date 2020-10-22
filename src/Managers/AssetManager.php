@@ -2,9 +2,12 @@
 
 namespace Bigmom\VeEditor\Managers;
 
+use Bigmom\VeEditor\Models\Asset;
 use Bigmom\VeEditor\Models\AssetTemplate;
 use Bigmom\VeEditor\Models\Folder;
-use Storage;
+use Bigmom\VeEditor\Models\Hotspot;
+use Bigmom\VeEditor\Models\Placeholder;
+use Bigmom\VeEditor\Models\Scene;
 
 class AssetManager
 {
@@ -44,6 +47,12 @@ class AssetManager
 
     public function pull($result)
     {
+        Asset::truncate();
+        AssetTemplate::truncate();
+        Folder::truncate();
+        Hotspot::truncate();
+        Placeholder::truncate();
+        Scene::truncate();
         foreach ($result->get('asset') as $asset) {
             Asset::create($asset);
         }

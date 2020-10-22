@@ -5,8 +5,8 @@ return [
     //disk. Currently available: s3. Will be available in the future: do || local
     'storage' => 's3',
 
-    'pull_url' => env('VE_EDITOR_URL'),
-    
+    'pull_url' => env('VE_EDITOR_URL') . '/ve-editor/api/pull',
+
     'api_token' => env('VE_EDITOR_API_TOKEN'),
 
     'config' => [
