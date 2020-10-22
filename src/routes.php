@@ -44,7 +44,8 @@ Route::prefix('ve-editor')->name('ve-editor.')->middleware(['auth:sanctum', Ensu
                 Route::post('{scene}/manage', [SceneController::class, 'postManage'])->name('postManage');
             });
         } else if (config('app.env') != 'production'){
-            Route::get('/pull', [ContentController::class, 'getContent'])->name('getContent');
+            Route::get('/pull', [ContentController::class, 'getIndex'])->name('getIndex');
+            Route::post('/pull', [ContentController::class, 'pull'])->name('pull');
         }
     });
     Route::middleware(['api'])->prefix('api')->name('api.')->group(function () {

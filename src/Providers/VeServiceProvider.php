@@ -68,7 +68,6 @@ class VeServiceProvider extends ServiceProvider
 
         Blade::directive('asset', function ($path) {
             $path = substr($path, 1, -1);
-            dd($path);
             $url = app('sasset')($path);
             return e($url);
         });
