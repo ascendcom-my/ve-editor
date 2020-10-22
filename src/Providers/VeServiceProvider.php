@@ -44,7 +44,7 @@ class VeServiceProvider extends ServiceProvider
         ]);
 
         $this->publishes([
-            __DIR__.'/public' => public_path('vendor/ve'),
+            __DIR__.'/../public' => public_path('vendor/ve'),
         ], 'public');
 
         $this->app->singleton('asset', function ($app) {
