@@ -50,7 +50,7 @@
       </tbody>
     </table>
 
-    <div class="absolute w-screen h-screen left-0 flex justify-center top-0 items-center bg-gray-500 bg-opacity-25" x-show="showModal">
+    <div class="fixed w-screen h-screen left-0 flex justify-center top-0 items-center bg-gray-500 bg-opacity-25" x-show="showModal">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg" @click.away="showDeleteModal = false; showCreateModal = false; showUpdateModal = false; showModal = false">
           <form class="px-4 py-2 text-center container" x-show="showCreateModal" action="{{ route('ve-editor.asset-template.postCreate') }}" method="POST" enctype="multipart/form-data">
