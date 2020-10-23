@@ -62,7 +62,7 @@ class Scene extends Model
 
     public function getBladeAttribute()
     {
-        return 'vendor.ve-editor.scene.' . [
+        return 'veeditor::scene.' . [
             'image',
             'glb',
             'image',

@@ -94,7 +94,7 @@ class AssetTemplateController extends Controller
     
     public function getShow(AssetTemplate $template)
     {
-        return view('vendor.ve-editor.asset-template.show', compact('template'));
+        return view('veeditor::asset-template.show', compact('template'));
     }
 
     public function postSort(Request $request)

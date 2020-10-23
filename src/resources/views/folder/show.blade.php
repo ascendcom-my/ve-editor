@@ -1,4 +1,4 @@
-<x-ve-layout>
+<x-veeditor::layout>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.min.js" integrity="sha512-ELgdXEUQM5x+vB2mycmnSCsiDZWQYXKwlzh9+p+Hff4f5LA+uf0w2pOp3j7UAuSAajxfEzmYZNOOLQuiotrt9Q==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.js" integrity="sha512-85wMDrEBH6URHnv1YFFaSFnh2Rk1wbQ4LdKrN2Km34DPwbBLJUW/bEraiLfknBXfdd9VQtB6z0DGavH100160A==" crossorigin="anonymous"></script>
   <div x-data="{ showModal: false, showCreateModal: false, showUpdateModal: false, showDeleteModal: false, name: '', templateId: '', type: '', requirement: '' }">
@@ -188,4 +188,4 @@
       document.body.removeChild(el);
     }
   </script>
-</x-ve-layout>
+</x-veeditor::layout>

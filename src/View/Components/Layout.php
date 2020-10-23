@@ -13,6 +13,6 @@ class Layout extends Component
      */
     public function render()
     {
-        return view('vendor.ve-editor.layouts.app');
+        return view('veeditor::layouts.app');
     }
 }

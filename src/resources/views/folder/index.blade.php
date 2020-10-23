@@ -1,4 +1,4 @@
-<x-ve-layout>
+<x-veeditor::layout>
   <div x-data="{ showModal: false, showUpdateModal: false, showDeleteModal: false, name: '', folderId: '' }">
     <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -69,4 +69,4 @@
       </div>
     </div>
   </div>
-</x-ve-layout>
+</x-veeditor::layout>

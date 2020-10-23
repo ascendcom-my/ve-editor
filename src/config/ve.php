@@ -14,8 +14,15 @@ return [
     ],
 
     'main' => env('VE_EDITOR_MAIN', false),
-        
+    
+    'restrict-usage' => false,
+    
     'allowed-users' => [
         'admin@mail.io',
+    ],
+
+    'guard' => [
+        // 'driver' => 'session',
+        // 'provider' => 'users',
     ]
 ];

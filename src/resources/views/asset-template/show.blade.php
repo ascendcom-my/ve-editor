@@ -1,4 +1,4 @@
-<x-ve-layout>
+<x-veeditor::layout>
   <div x-data="{ showModal: false, showCreateModal: false, showDeleteModal: false, assetId: '' }">
     <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -89,4 +89,4 @@
       document.body.removeChild(el);
     }
   </script>
-</x-ve-layout>
+</x-veeditor::layout>

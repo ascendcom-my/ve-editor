@@ -19,7 +19,12 @@ class VeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        config([
+            'auth.guards.ve-editor' => array_merge([
+                'driver' => config('ve.guard.driver', 'session'),
+                'provider' => config('ve.guard.provider', 'users'),
+            ], config('auth.guards.ve-editor', [])),
+        ]);
     }
 
     /**
@@ -37,13 +42,7 @@ class VeServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views'),
-        ]);
-        
-        $this->loadViewComponentsAs('ve', [
-            Layout::class,
-        ]);
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 've-editor');
 
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/ve'),
@@ -87,7 +86,9 @@ class VeServiceProvider extends ServiceProvider
             return $svg;
         });
 
-        $this->gate();
+        if (!empty(config('ve.allowed-users'))) {
+            $this->gate();
+        }
     }
 
     /**
@@ -100,7 +101,7 @@ class VeServiceProvider extends ServiceProvider
     protected function gate()
     {
         Gate::define('accessVeEditor', function ($user = null) {
-            return in_array(optional($user)->email, config('ve.allowed-users'));
+            return in_array(optional($user)->email, config('ve.restrict-access.allowed-users'));
         });
     }
 }

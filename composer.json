@@ -20,8 +20,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.3",
-        "laravel/framework": "^8.0",
-        "laravel/sanctum": "^2.6"
+        "laravel/framework": "^8.0"
     }
 
 }

@@ -14,7 +14,7 @@ class SceneController extends Controller
     public function getIndex()
     {
         $scenes = Scene::get();
-        return view('vendor.ve-editor.scene.index', compact('scenes'));
+        return view('veeditor::scene.index', compact('scenes'));
     }
 
     public function postCreate(Request $request)
