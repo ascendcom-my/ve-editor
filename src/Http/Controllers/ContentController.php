@@ -10,7 +10,7 @@ class ContentController extends Controller
 {
     public function getIndex()
     {
-        return view('ve-editor.content.index');
+        return view('vendor.ve-editor.content.index');
     }
 
     public function pull()

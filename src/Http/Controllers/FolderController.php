@@ -16,7 +16,7 @@ class FolderController extends Controller
 
         $folders = Folder::where('folder_type', $request->input('folder-type'))->get();
 
-        return view('ve-editor.folder.index', compact('folders'));
+        return view('vendor.ve-editor.folder.index', compact('folders'));
     }
 
     public function postCreate(Request $request)
@@ -77,6 +77,6 @@ class FolderController extends Controller
 
     public function getShow(Folder $folder)
     {
-        return view('ve-editor.folder.show', compact('folder'));
+        return view('vendor.ve-editor.folder.show', compact('folder'));
     }
 }
