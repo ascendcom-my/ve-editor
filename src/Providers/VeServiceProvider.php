@@ -42,7 +42,7 @@ class VeServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 've-editor');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'veeditor');
 
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/ve'),
