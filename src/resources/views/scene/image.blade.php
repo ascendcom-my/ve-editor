@@ -24,7 +24,7 @@
       <svg id="svg-layer">
         @foreach ($scene->hotspots as $hotspot)
         {{ $hotspot }}
-        @include('ve-editor.scene.path', [
+        @include('veeditor::scene.path', [
           'id' => $hotspot->id ?? '',
           'type' => 'hotspot',
           'color' => 'blue',
@@ -36,7 +36,7 @@
         ])
         @endforeach
         @foreach($scene->placeholders as $placeholder)
-        @include('ve-editor.scene.path', [
+        @include('veeditor::scene.path', [
           'type' => 'placeholder',
           'color' => 'red',
           'region' => json_decode($placeholder->position),
