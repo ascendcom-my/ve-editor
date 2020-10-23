@@ -3,8 +3,9 @@
 namespace Bigmom\VeEditor\Providers;
 
 use Bigmom\VeEditor\Commands\PullVeEditor;
-use Bigmom\VeEditor\Managers\AssetManager;
 use Bigmom\VeEditor\Facades\Asset;
+use Bigmom\VeEditor\Managers\AssetManager;
+use Bigmom\VeEditor\View\Components\Layout;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
