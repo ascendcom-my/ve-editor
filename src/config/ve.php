@@ -7,7 +7,8 @@ return [
 
     'pull_url' => env('VE_EDITOR_URL') . '/ve-editor/api/pull',
 
-    'api_token' => env('VE_EDITOR_API_TOKEN'),
+    'api_username' => env('VE_EDITOR_USERNAME'),
+    'api_password' => env('VE_EDITOR_PASSWORD'),
 
     'config' => [
         'filesystems.disks.s3.options' => ['CacheControl' => 'max-age=315360000, no-transform, public'],

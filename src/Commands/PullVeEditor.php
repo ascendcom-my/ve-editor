@@ -39,7 +39,7 @@ class PullVeEditor extends Command
      */
     public function handle()
     {
-        $response = Http::withToken(config('ve.api_token'))->get(config('ve.pull_url'));
+        $response = Http::withBasicAuth(config('ve.api_username'), config('ve.api_password'))->get(config('ve.pull_url'));
 
         $result = collect($response->json());
 
