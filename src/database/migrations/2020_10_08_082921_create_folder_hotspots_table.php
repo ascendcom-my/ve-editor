@@ -28,6 +28,6 @@ class CreateFolderHotspotsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asset_group_hotspot');
+        Schema::dropIfExists('folder_hotspot');
     }
 }
