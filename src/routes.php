@@ -48,7 +48,7 @@ Route::prefix('ve-editor')->name('ve-editor.')->group(function () {
             Route::post('/pull', [ContentController::class, 'pull'])->name('pull');
         }
     });
-    Route::middleware(['api', 'auth-basic:ve-editor', EnsureUserIsAuthorized::class])->prefix('api')->name('api.')->group(function () {
+    Route::middleware(['api', 'auth.basic:ve-editor', EnsureUserIsAuthorized::class])->prefix('api')->name('api.')->group(function () {
         if (config('ve.main')) {
             Route::get('/pull', [APIController::class, 'getContent'])->name('getContent');
         }
