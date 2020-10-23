@@ -80,6 +80,7 @@ class VeServiceProvider extends ServiceProvider
         });
         
         Blade::directive('svg', function ($path) {
+            $path = substr($path, 1, -1);
             $svg = file_get_contents(app('sasset')($path));
             $svg = preg_replace('/\<\?xml(.*)\?\>/', '', $svg);
             $svg = preg_replace('/\<\!\-\-(.*)--\>/', '', $svg);
