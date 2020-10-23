@@ -86,7 +86,7 @@ class VeServiceProvider extends ServiceProvider
             return $svg;
         });
 
-        if (!empty(config('ve.allowed-users'))) {
+        if (config('ve.restrict-usage')) {
             $this->gate();
         }
     }
@@ -101,7 +101,7 @@ class VeServiceProvider extends ServiceProvider
     protected function gate()
     {
         Gate::define('accessVeEditor', function ($user = null) {
-            return in_array(optional($user)->email, config('ve.restrict-access.allowed-users'));
+            return in_array(optional($user)->email, config('ve.allowed-users'));
         });
     }
 }
