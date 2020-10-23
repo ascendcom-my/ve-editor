@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace Bigmom\VeEditor\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Models\Asset;
-use App\Models\AssetTemplate;
-use App\Models\Folder;
-use App\Models\FolderHotspot;
-use App\Models\Hotspot;
-use App\Models\Placeholder;
-use App\Models\Scene;
+use Bigmom\VeEditor\Http\Controllers\Controller;
+use Bigmom\VeEditor\Models\Asset;
+use Bigmom\VeEditor\Models\AssetTemplate;
+use Bigmom\VeEditor\Models\Folder;
+use Bigmom\VeEditor\Models\FolderHotspot;
+use Bigmom\VeEditor\Models\Hotspot;
+use Bigmom\VeEditor\Models\Placeholder;
+use Bigmom\VeEditor\Models\Scene;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
