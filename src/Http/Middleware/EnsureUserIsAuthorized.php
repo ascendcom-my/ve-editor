@@ -19,10 +19,12 @@ class EnsureUserIsAuthorized
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $allowed = app()->environment('local')
-            || Gate::allows('accessVeEditor', [$request->user('ve-editor')]);
+        if (config('ve.restrict-usage')) {
+            $allowed = app()->environment('local')
+                || Gate::forUser(Auth::guard('ve-editor')->user())->allows('accessVeEditor');
 
-        abort_unless($allowed, 403);
+            abort_unless($allowed, 403);
+        }
 
         return $next($request);
     }

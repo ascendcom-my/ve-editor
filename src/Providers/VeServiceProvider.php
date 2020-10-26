@@ -81,9 +81,7 @@ class VeServiceProvider extends ServiceProvider
             return $svg;
         });
 
-        if (config('ve.restrict-usage')) {
-            $this->gate();
-        }
+        $this->gate();
     }
 
     /**
