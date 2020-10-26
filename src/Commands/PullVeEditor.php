@@ -39,7 +39,15 @@ class PullVeEditor extends Command
      */
     public function handle()
     {
+        if (config('ve.main')) {
+            return $this->info('Main server cannot pull!');
+        }
+
         $response = Http::withBasicAuth(config('ve.api_username'), config('ve.api_password'))->get(config('ve.pull_url'));
+
+        if (!$response->json()) {
+            return $this->info("Error " . $response->status());
+        }
 
         $result = collect($response->json());
 

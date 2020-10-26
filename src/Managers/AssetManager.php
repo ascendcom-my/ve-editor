@@ -10,22 +10,38 @@ use Bigmom\VeEditor\Models\Hotspot;
 use Bigmom\VeEditor\Models\Placeholder;
 use Bigmom\VeEditor\Models\Scene;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class AssetManager
 {
-    public function get($keys)
+    public function get($path)
     {
-        $template = AssetTemplate::where('name', $keys[1])->whereHas('folder', function ($q) use ($keys) {
-            $q->where('name', $keys[0]);
-        })->first();
-        
-        if (!$template) {
+        $url = Cache::rememberForever($path, function () use ($path) {
+            $keys = explode('.', $path);
+            $folder = $keys[0] ?? false;
+            if (!$folder) throw new \Exception('No folder specified for asset');
+            $asset = $keys[1] ?? false;
+            if (!$asset) throw new \Exception('No file specified for asset');
+
+            $template = AssetTemplate::where('name', $keys[1])->whereHas('folder', function ($q) use ($keys) {
+                $q->where('name', $keys[0]);
+            })->first();
+            
+            if (!$template) {
+                return null;
+            }
+    
+            $asset = $template->assets()->latest()->first();
+    
+            return $asset ? $asset->url : null;
+        });
+
+        if ($url) {
+            return $url;
+        } else {
+            Cache::forget($path);
             return null;
         }
-
-        $asset = $template->assets()->latest()->first();
-
-        return $asset ? $asset->url : null;
     }
 
     public function sort($sequence)

@@ -60,15 +60,9 @@ class VeServiceProvider extends ServiceProvider
 
         $this->app->singleton('sasset', function () {
             return function ($path) {
-                $nameAndFile = explode('.', $path);
-                $name = $nameAndFile[0] ?? false;
-                if (!$name) throw new \Exception('No folder specified for asset');
-                $file = $nameAndFile[1] ?? false;
-                if (!$file) throw new \Exception('No file specified for asset');
+                $url = Asset::get($path);
 
-                $url = Asset::get($nameAndFile);
-
-                if (!$file || !$url) throw new \Exception('Asset Not Found');
+                if (!$url) throw new \Exception('Asset Not Found');
                 return $url;
             };
         });
