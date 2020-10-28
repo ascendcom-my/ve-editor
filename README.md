@@ -25,6 +25,7 @@ A placeholder only stores a url field. Do whatever you want with it really.
 
 `composer require bigmom/ve-editor`
 `php artisan vendor:publish`
+`php artisan migrate`
 
 ## config
 
