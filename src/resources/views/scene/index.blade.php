@@ -41,7 +41,7 @@
       </tbody>
     </table>
     <div class="py-3 px-3">
-      {{ $templates->withQueryString()->links() }}
+      {{ $scenes->withQueryString()->links() }}
     </div>
 
     <div class="fixed w-screen h-screen left-0 flex justify-center top-0 items-center bg-gray-500 bg-opacity-25" x-show="showModal">
