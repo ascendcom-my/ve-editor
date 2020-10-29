@@ -81,7 +81,7 @@ class FolderController extends Controller
 
     public function getShow(Folder $folder, Request $request)
     {
-        $assets = $folder->assetTemplates()->orderBy('sequence', 'asc')->paginate(15);
-        return view('veeditor::folder.show', compact('folder', 'assets'));
+        $templates = $folder->assetTemplates()->orderBy('sequence', 'asc')->paginate(15);
+        return view('veeditor::folder.show', compact('folder', 'templates'));
     }
 }
