@@ -11,9 +11,14 @@ use Illuminate\Http\Request;
 
 class SceneController extends Controller
 {
-    public function getIndex()
+    public function getIndex(Request $request)
     {
-        $scenes = Scene::get();
+        $request->validate([
+            'search' => 'nullable|string|max:191',
+        ]);
+        $scenes = Scene::when($request->input('search'), function ($query, $search) {
+            return $query->where('name', 'like', "%$search%");
+        })->paginate(15);
         return view('veeditor::scene.index', compact('scenes'));
     }
 

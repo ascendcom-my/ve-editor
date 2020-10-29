@@ -8,6 +8,11 @@
     </h2>
     </x-slot>
 
+    <form action="{{ route('ve-editor.folder.getShow', $folder) }}" class="w-full flex" method="GET">
+      @csrf
+      <input type="text" class="flex-1 my-2 mx-2 flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="search">
+      <button type="submit" class="cursor-pointer mx-2 my-2 w-auto bg-gray-300 hover:bg-gray-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
+    </form>
     <div class="flex justify-between">
       <a href="{{ route('ve-editor.folder.getIndex', ['folder-type' => $folder->folder_type]) }}" class="cursor-pointer mx-2 my-2 w-auto bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back</a>
       <button class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" @click="showModal = true; showCreateModal = true;">Create Asset Template</button>
@@ -25,7 +30,7 @@
         </tr>
       </thead>
       <tbody class="sortable">
-        @forelse($folder->assetTemplates()->orderBy('sequence', 'asc')->get() as $template)
+        @forelse($templates as $template)
         <tr data-id="{{ $template->id }}">
           <td class="border px-4 py-2">{{ $template->name }}</td>
           <td class="border px-4 py-2">{{ $template->typeName }}</td>
@@ -49,6 +54,9 @@
         @endforelse
       </tbody>
     </table>
+    <div class="py-3 px-3">
+      {{ $templates->withQueryString()->links() }}
+    </div>
 
     <div class="fixed w-screen h-screen left-0 flex justify-center top-0 items-center bg-gray-500 bg-opacity-25" x-show="showModal">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

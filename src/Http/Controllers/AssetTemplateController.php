@@ -94,7 +94,8 @@ class AssetTemplateController extends Controller
     
     public function getShow(AssetTemplate $template)
     {
-        return view('veeditor::asset-template.show', compact('template'));
+        $assets = $template->assets()->orderBy('updated_at', 'desc')->paginate(15);
+        return view('veeditor::asset-template.show', compact('template', 'assets'));
     }
 
     public function postSort(Request $request)

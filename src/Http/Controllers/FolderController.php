@@ -12,9 +12,13 @@ class FolderController extends Controller
     {
         $request->validate([
             'folder-type' => 'required|integer|in:0,1',
+            'search' => 'nullable|string|max:191',
         ]);
 
-        $folders = Folder::where('folder_type', $request->input('folder-type'))->get();
+        $folders = Folder::where('folder_type', $request->input('folder-type'))
+            ->when($request->input('search'), function ($query, $search) {
+                return $query->where('name', 'like', "%$search%");
+            })->paginate(15);
 
         return view('veeditor::folder.index', compact('folders'));
     }
@@ -75,8 +79,9 @@ class FolderController extends Controller
             ->with('message', 'Folder deleted');
     }
 
-    public function getShow(Folder $folder)
+    public function getShow(Folder $folder, Request $request)
     {
-        return view('veeditor::folder.show', compact('folder'));
+        $assets = $folder->assetTemplates()->orderBy('sequence', 'asc')->paginate(15);
+        return view('veeditor::folder.show', compact('folder', 'assets'));
     }
 }
