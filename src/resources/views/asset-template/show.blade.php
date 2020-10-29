@@ -6,11 +6,6 @@
     </h2>
     </x-slot>
 
-    <form action="{{ route('ve-editor.asset-template.getShow', $template) }}" class="w-full flex" method="GET">
-      @csrf
-      <input type="text" class="flex-1 my-2 mx-2 flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="search">
-      <button type="submit" class="cursor-pointer mx-2 my-2 w-auto bg-gray-300 hover:bg-gray-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
-    </form>
     <div class="flex justify-between">
       <a href="{{ route('ve-editor.folder.getShow', $template->folder_id) }}" class="cursor-pointer mx-2 my-2 w-auto bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back</a>
       <button class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" @click="showModal = true; showCreateModal = true;">Create Asset</button>
