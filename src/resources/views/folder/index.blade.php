@@ -6,9 +6,10 @@
     </h2>
     </x-slot>
 
-    <form action="{{ route('ve-editor.folder.getIndex', ['folder-type' => request()->input('folder-type')]) }}" class="w-full flex" method="GET">
+    <form action="{{ route('ve-editor.folder.getIndex') }}" class="w-full flex" method="GET">
       @csrf
       <input type="text" class="flex-1 my-2 mx-2 flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="search">
+      <input type="hidden" name="folder-type" value="{{ request()->input('folder-type') }}">
       <button type="submit" class="cursor-pointer mx-2 my-2 w-auto bg-gray-300 hover:bg-gray-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
     </form>
     <form method="POST" action="{{ route('ve-editor.folder.postCreate') }}" class="w-full flex px-4 py-2 items-center">
