@@ -87,4 +87,36 @@ class AssetManager
 
         return true;
     }
+
+    public function checkSizeLimit($uploadedFile)
+    {
+        $sizeLimit = config('ve.size-limit');
+
+        if ($sizeLimit) {
+            $fileSize = $uploadedFile->getSize();
+            $occupiedSize = $this->getOccupiedSize;
+
+            $newSize = $occupiedSize + $fileSize;
+            if ($newSize > $sizeLimit) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public function getOccupiedSize()
+    {
+        return Cache::rememberForever('occupied-size', function () {
+            $occupiedSize = 0;
+
+            foreach (Asset::get() as $asset) {
+                $occupiedSize += $asset->size;
+            }
+
+            return $occupiedSize;
+        });
+    }
 }
