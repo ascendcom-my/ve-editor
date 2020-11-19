@@ -2,7 +2,7 @@
 
 namespace Bigmom\VeEditor\Models;
 
-use Bigmom\Traits\CheckSize;
+use Bigmom\VeEditor\Traits\CheckSize;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Storage;
