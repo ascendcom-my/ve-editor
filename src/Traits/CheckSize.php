@@ -43,9 +43,4 @@ trait CheckSize
             return $occupiedSize;
         });
     }
-
-    public function updateSize()
-    {
-        
-    }
 }
