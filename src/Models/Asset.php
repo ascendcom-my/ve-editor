@@ -27,10 +27,10 @@ class Asset extends Model
 
     public function store($file)
     {
-        if (AssetManager::checkSizeLimit($file)) {
+        if (AssetManager::checkSizeLimit($file) === false) {
             abort(500, 'Size limit exceeded');
         }
-        
+
         config(config('ve.config'));
         $options = ['disk' => config('ve.storage')];
         if (AssetTemplate::find($this->asset_template_id)->folder->folder_type === 2) {
