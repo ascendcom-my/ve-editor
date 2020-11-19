@@ -5,6 +5,7 @@ namespace Bigmom\VeEditor\Models;
 use Bigmom\VeEditor\Traits\CheckSize;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 use Storage;
 
 class Asset extends Model
@@ -35,6 +36,8 @@ class Asset extends Model
         }
         $this->path = $file->storePublicly('assets', $options);
 
+        $this->updateSize($file);
+
         return $this->path;
     }
 
@@ -47,5 +50,12 @@ class Asset extends Model
         Storage::disk($disk)->delete($this->path);
 
         return $this;
+    }
+
+    public function updateSize($file)
+    {
+        $this->size = $file->getSize();
+        Cache::put('occupied-size', $this->getOccupiedSize() + $this->size);
+        return true;
     }
 }
