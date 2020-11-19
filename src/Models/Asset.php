@@ -26,7 +26,7 @@ class Asset extends Model
     {
         config(config('ve.config'));
         $options = ['disk' => config('ve.storage')];
-        if ($file->asset_template->folder->folder_type === 2) {
+        if ($this->asset_template->folder->folder_type === 2) {
             $options['ContentDisposition'] = 'attachment';
         }
         $this->path = $file->storePublicly('assets', $options);
