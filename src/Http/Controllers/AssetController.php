@@ -20,6 +20,12 @@ class AssetController extends Controller
 
         $path = $asset->store($request->file('file'));
 
+        if ($path === false) {
+            return redirect()
+                ->back()
+                ->withErrors('error', 'Size limit exceeded.');
+        }
+
         if ($request->has('dummy') && $request->input('dummy')) {
             $asset->dummy = 1;
         } else {

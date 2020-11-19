@@ -33,7 +33,13 @@ class AssetTemplateController extends Controller
         if ($request->has('file')) {
             $asset = new Asset;
             $asset->asset_template_id = $template->id;
-            $asset->store($request->file('file'));
+            $path = $asset->store($request->file('file'));
+
+            if ($path === false) {
+                return redirect()
+                    ->back()
+                    ->withErrors('error', 'File limit exceeded.');
+            }
     
             if ($request->has('dummy') && $request->input('dummy')) {
                 $asset->dummy = 1;
