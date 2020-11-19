@@ -10,7 +10,7 @@ class CheckSize
         return $uploadedFile->getSize();
     }
 
-    public function checkSize($uploadedFile)
+    public function checkSizeLimit($uploadedFile)
     {
         $sizeLimit = config('ve.size-limit');
 

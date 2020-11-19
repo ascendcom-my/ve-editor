@@ -25,7 +25,7 @@ class Asset extends Model
 
     public function store($file)
     {
-        if (!$this->checkSize($file)) {
+        if (!$this->checkSizeLimit($file)) {
             abort(500, 'Size limit exceeded');
         }
         config(config('ve.config'));
