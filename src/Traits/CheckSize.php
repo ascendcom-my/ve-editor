@@ -5,7 +5,7 @@ namespace Bigmom\VeEditor\Traits;
 use Bigmom\VeEditor\Models\Asset;
 use Illuminate\Support\Facades\Cache;
 
-class CheckSize
+trait CheckSize
 {
     public function getSize($uploadedFile)
     {
