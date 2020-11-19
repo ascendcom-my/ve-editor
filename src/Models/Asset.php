@@ -3,6 +3,7 @@
 namespace Bigmom\VeEditor\Models;
 
 use Bigmom\VeEditor\Traits\CheckSize;
+use Bigmom\VeEditor\Models\AssetTemplate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -31,7 +32,7 @@ class Asset extends Model
         }
         config(config('ve.config'));
         $options = ['disk' => config('ve.storage')];
-        if ($this->asset_template->folder->folder_type === 2) {
+        if (AssetTemplate::find($this->asset_template_id)->folder->folder_type === 2) {
             $options['ContentDisposition'] = 'attachment';
         }
         $this->path = $file->storePublicly('assets', $options);
