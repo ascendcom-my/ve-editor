@@ -27,6 +27,7 @@
                     <div class="py-3">
                         <a href="{{ route('ve-editor.folder.getIndex', ['folder-type' => 0]) }}" class="w-auto bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Static assets</a>
                         <a href="{{ route('ve-editor.folder.getIndex', ['folder-type' => 1]) }}" class="mx-2 w-auto bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Content assets</a>
+                        <a href="{{ route('ve-editor.folder.getIndex', ['folder-type' => 2]) }}" class="mx-2 w-auto bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Downloadable</a>
                         <a href="{{ route('ve-editor.scene.getIndex') }}" class="w-auto bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Scenes</a>
                     </div>
                 </div>

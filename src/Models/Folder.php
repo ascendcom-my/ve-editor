@@ -14,6 +14,7 @@ class Folder extends Model
     private const FOLDER_TYPE = [
         'Static Asset',
         'Content Asset',
+        'Downloadable',
     ];
 
     public function assetTemplates()

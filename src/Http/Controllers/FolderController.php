@@ -11,7 +11,7 @@ class FolderController extends Controller
     public function getIndex(Request $request)
     {
         $request->validate([
-            'folder-type' => 'required|integer|in:0,1',
+            'folder-type' => 'required|integer|in:0,1,2',
             'search' => 'nullable|string|max:191',
         ]);
 
@@ -27,7 +27,7 @@ class FolderController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:191',
-            'folder-type' => 'required|integer|in:0,1',
+            'folder-type' => 'required|integer|in:0,1,2',
         ]);
 
         $folder = new Folder;
