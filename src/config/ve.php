@@ -25,5 +25,7 @@ return [
     'guard' => [
         // 'driver' => 'session',
         // 'provider' => 'users',
-    ]
+    ],
+
+    'size-limit' => 5000000000,
 ];

@@ -2,13 +2,14 @@
 
 namespace Bigmom\VeEditor\Models;
 
+use Bigmom\Traits\CheckSize;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Storage;
 
 class Asset extends Model
 {
-    use HasFactory;
+    use CheckSize, HasFactory;
 
     protected $fillable = ['id', 'asset_template_id', 'dummy', 'path', 'created_at', 'updated_at'];
 
@@ -24,6 +25,9 @@ class Asset extends Model
 
     public function store($file)
     {
+        if (!$this->checkSize($file)) {
+            abort(500, 'Size limit exceeded');
+        }
         config(config('ve.config'));
         $options = ['disk' => config('ve.storage')];
         if ($this->asset_template->folder->folder_type === 2) {
