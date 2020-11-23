@@ -13,7 +13,7 @@ class Asset extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'asset_template_id', 'dummy', 'path', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'asset_template_id', 'dummy', 'path', 'size', 'created_at', 'updated_at'];
 
     public function assetTemplate()
     {
