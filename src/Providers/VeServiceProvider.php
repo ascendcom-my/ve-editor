@@ -8,6 +8,7 @@ use Bigmom\VeEditor\Managers\AssetManager;
 use Bigmom\VeEditor\View\Components\Layout;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class VeServiceProvider extends ServiceProvider
@@ -44,6 +45,10 @@ class VeServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'veeditor');
 
+        View::composer(
+            'veeditor::*', 'Bigmom\VeEditor\View\Composers\SizeComposer'
+        );
+
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/ve'),
         ], 'public');
@@ -62,7 +67,7 @@ class VeServiceProvider extends ServiceProvider
             return function ($path) {
                 $url = Asset::get($path);
 
-                if (!$url) throw new \Exception('Asset Not Found');
+                if (!$url) throw new \Exception('Asset Not Found: '.$path);
                 return $url;
             };
         });

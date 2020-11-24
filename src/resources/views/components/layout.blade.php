@@ -39,6 +39,7 @@
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div class="bg-white shadow-xl sm:rounded-lg">
                             {{ $slot }}
+                            <div class="px-2 pb-4">{{ $occupiedSize }} used @if(isset($maxSize))of {{ $maxSize }}@endif</div>
                         </div>
                     </div>
                 </div>

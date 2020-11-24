@@ -14,7 +14,7 @@ class AddSizeToAssetsTable extends Migration
     public function up()
     {
         Schema::table('assets', function (Blueprint $table) {
-            $table->bigInteger('size');
+            $table->bigInteger('size')->default(0);
         });
     }
 
