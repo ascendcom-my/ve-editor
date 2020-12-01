@@ -2950,6 +2950,8 @@ var Vapor = /*#__PURE__*/function () {
                   }
                 }
 
+                headers['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
                 if (_typeof(headers) === 'object') {}
 
                 if (typeof options.progress === 'undefined') {
@@ -2957,7 +2959,7 @@ var Vapor = /*#__PURE__*/function () {
                 }
 
                 cancelToken = options.cancelToken || '';
-                _context.next = 12;
+                _context.next = 13;
                 return axios.put(response.data.url, file, {
                   cancelToken: cancelToken,
                   headers: headers,
@@ -2966,11 +2968,11 @@ var Vapor = /*#__PURE__*/function () {
                   }
                 });
 
-              case 12:
+              case 13:
                 response.data.extension = file.name.split('.').pop();
                 return _context.abrupt("return", response.data);
 
-              case 14:
+              case 15:
               case "end":
                 return _context.stop();
             }

@@ -31,6 +31,8 @@ export default class Vapor
             }
         }
 
+        headers['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         if (typeof headers === 'object') {
             
         }
