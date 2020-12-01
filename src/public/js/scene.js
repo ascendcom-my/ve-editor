@@ -2923,7 +2923,8 @@ var Vapor = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
-                _context.next = 3;
+                options['headers']['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                _context.next = 4;
                 return axios.post('/ve-editor/vapor/signed-storage-url', {
                   'bucket': options.bucket || '',
                   'content_type': options.contentType || file.type,
@@ -2935,7 +2936,7 @@ var Vapor = /*#__PURE__*/function () {
                   headers: options.headers || {}
                 }, options.options));
 
-              case 3:
+              case 4:
                 response = _context.sent;
                 headers = response.data.headers;
 
@@ -2949,8 +2950,6 @@ var Vapor = /*#__PURE__*/function () {
                     headers[key] = headers[key][0];
                   }
                 }
-
-                headers['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
                 if (_typeof(headers) === 'object') {}
 
