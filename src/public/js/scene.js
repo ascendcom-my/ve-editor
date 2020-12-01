@@ -2923,8 +2923,15 @@ var Vapor = /*#__PURE__*/function () {
             switch (_context.prev = _context.next) {
               case 0:
                 options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
-                options['headers']['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                _context.next = 4;
+
+                if (!options.headers) {
+                  options.headers = {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                  };
+                }
+
+                ;
+                _context.next = 5;
                 return axios.post('/ve-editor/vapor/signed-storage-url', {
                   'bucket': options.bucket || '',
                   'content_type': options.contentType || file.type,
@@ -2936,7 +2943,7 @@ var Vapor = /*#__PURE__*/function () {
                   headers: options.headers || {}
                 }, options.options));
 
-              case 4:
+              case 5:
                 response = _context.sent;
                 headers = response.data.headers;
 
@@ -2958,7 +2965,7 @@ var Vapor = /*#__PURE__*/function () {
                 }
 
                 cancelToken = options.cancelToken || '';
-                _context.next = 13;
+                _context.next = 14;
                 return axios.put(response.data.url, file, {
                   cancelToken: cancelToken,
                   headers: headers,
@@ -2967,11 +2974,11 @@ var Vapor = /*#__PURE__*/function () {
                   }
                 });
 
-              case 13:
+              case 14:
                 response.data.extension = file.name.split('.').pop();
                 return _context.abrupt("return", response.data);
 
-              case 15:
+              case 16:
               case "end":
                 return _context.stop();
             }

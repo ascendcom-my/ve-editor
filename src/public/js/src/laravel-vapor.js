@@ -6,7 +6,9 @@ export default class Vapor
      * Store a file in S3 and return its UUID, key, and other information.
      */
     async store(file, options = {}) {
-        options['headers']['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        if (!options.headers) {
+            options.headers = {'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')}
+        };
         const response = await axios.post('/ve-editor/vapor/signed-storage-url', {
             'bucket': options.bucket || '',
             'content_type': options.contentType || file.type,
