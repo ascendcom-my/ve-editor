@@ -3010,6 +3010,11 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.Vapor = new _laravel_vapor__WEBPACK_IMPORTED_MODULE_0__["default"]();
 window.addEventListener('load', function () {
   document.getElementById('create-btn').addEventListener('click', function () {
+    var headers = {
+      headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      }
+    };
     window.Vapor.store(document.getElementById('create-file').files[0], {
       visibility: 'public-read'
     }).then(function (response) {
@@ -3019,7 +3024,7 @@ window.addEventListener('load', function () {
         uuid: response.uuid,
         key: response.key,
         bucket: response.bucket
-      }).then(function (response) {
+      }, headers).then(function (response) {
         location.reload();
       })["catch"](function (error) {
         console.log(error);

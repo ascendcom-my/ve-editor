@@ -4,6 +4,12 @@ window.Vapor = new Vapor;
 
 window.addEventListener('load', function () {
     document.getElementById('create-btn').addEventListener('click', function () {
+        var headers = {
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        }
+
         window.Vapor.store(document.getElementById('create-file').files[0], {
             visibility: 'public-read'
         }).then(response => {
@@ -13,7 +19,7 @@ window.addEventListener('load', function () {
                 uuid: response.uuid,
                 key: response.key,
                 bucket: response.bucket,
-            }).then(response => {
+            }, headers).then(response => {
                 location.reload();
             }).catch(error => {
                 console.log(error);

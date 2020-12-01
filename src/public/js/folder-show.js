@@ -2884,13 +2884,18 @@ window.addEventListener('load', function () {
   var options = {
     visibility: 'public-read'
   };
+  var headers = {
+    headers: {
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    }
+  };
   document.getElementById('create-btn').addEventListener('click', function () {
     axios.post(document.getElementById('create-form').action, {
       name: document.getElementById('create-name').value,
       type: document.getElementById('create-type').value,
       requirement: document.getElementById('create-requirement').value,
       "folder-id": document.getElementById('create-folder-id').value
-    }).then(function (response) {
+    }, headers).then(function (response) {
       var templateId = response['data']['template-id'];
       var file = document.getElementById('create-file').files[0];
 
@@ -2906,7 +2911,7 @@ window.addEventListener('load', function () {
             uuid: response.uuid,
             key: response.key,
             bucket: response.bucket
-          }).then(function (response) {
+          }, headers).then(function (response) {
             location.reload();
           })["catch"](function (error) {
             console.log(error);
