@@ -46,4 +46,9 @@ class Folder extends Model
             return "{$asset->typeName}:{$asset->url}";
         })->implode(PHP_EOL);
     }
+
+    public static function getTypeName($type)
+    {
+        return SELF::FOLDER_TYPE[$type];
+    }
 }

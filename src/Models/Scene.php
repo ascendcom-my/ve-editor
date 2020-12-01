@@ -28,6 +28,11 @@ class Scene extends Model
         return $this->hasMany(Placeholder::class);
     }
 
+    public function assetTemplate()
+    {
+        return $this->belongsTo(AssetTemplate::class);
+    }
+
     public function getTypeNameAttribute()
     {
         return SELF::TYPE[$this->type];
@@ -35,27 +40,88 @@ class Scene extends Model
 
     public function getUrlAttribute()
     {
-        return Storage::disk(config('ve.storage'))->url($this->path);
+        return $this->assetTemplate->url;
     }
 
     public function store($file)
     {
-        if ($this->path) {
-            $this->deleteAsset();
+        if (!$this->assetTemplate) {
+            $assetTemplate = new AssetTemplate;
+            $assetTemplate->name = $this->name;
+            switch ($this->type) {
+                case 0: $assetTemplate->file_type = 0;
+                break;
+                case 2: $assetTemplate->file_type = 1;
+                break;
+                default: $assetTemplate->file_type = 0;
+            }
+            $assetTemplate->requirement = '';
+            $assetTemplate->folder_id = Folder::where('name', 'Scenes')->first()->id;
+            $assetTemplate->sequence = AssetTemplate::where('folder_id', $assetTemplate->folder_id)->count();
+            $assetTemplate->save();
+            $this->asset_template_id = $assetTemplate->id;
         }
-        config(config('ve.config'));
-        $this->path = $file->storePublicly('scene', config('ve.storage'));
+
+        $asset = new Asset;
+
+        $asset->asset_template_id = $this->asset_template_id;
+        $this->path = $asset->store($file);
+
+        if ($this->path === false) {
+            return false;
+        }
+
+        $asset->save();
 
         return $this->path;
     }
 
-    public function deleteAsset($disk = null)
+    public function storeByKey($key)
+    {
+        if (!$this->assetTemplate) {
+            $assetTemplate = new AssetTemplate;
+            $assetTemplate->name = $this->name;
+            switch ($this->type) {
+                case 0: $assetTemplate->file_type = 0;
+                break;
+                case 2: $assetTemplate->file_type = 1;
+                break;
+                default: $assetTemplate->file_type = 0;
+            }
+            $assetTemplate->requirement = '';
+            $assetTemplate->folder_id = Folder::where('name', 'Scenes')->first()->id;
+            $assetTemplate->sequence = AssetTemplate::where('folder_id', $assetTemplate->folder_id)->count();
+            $assetTemplate->save();
+            $this->asset_template_id = $assetTemplate->id;
+        }
+
+        $asset = new Asset;
+
+        $asset->asset_template_id = $this->asset_template_id;
+        $this->path = $asset->storeByKey($key);
+
+        if ($this->path === false) {
+            return false;
+        }
+
+        $asset->save();
+
+        return $this->path;
+    }
+
+    public function deleteAssetTemplate($disk = null)
     {
         if (!$disk) {
             $disk = config('ve.storage');
         }
+        
+        if ($this->assetTemplate) {
+            foreach ($this->assetTemplate->assets as $asset) {
+                $asset->deleteAsset()->delete();
+            }
 
-        Storage::disk($disk)->delete($this->path);
+            $this->assetTemplate->delete();
+        }
 
         return $this;
     }

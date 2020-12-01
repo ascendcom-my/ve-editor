@@ -1,6 +1,6 @@
 <?php
 
-namespace Bigmom\VeEditor\Http\Controllers;
+namespace Bigmom\VeEditor\Http\Controllers\Vapor;
 
 use Bigmom\VeEditor\Http\Controllers\Controller;
 use Bigmom\VeEditor\Models\Folder;
@@ -29,6 +29,12 @@ class FolderController extends Controller
             'name' => 'required|string|max:191|unique:folders,name',
             'folder-type' => 'required|integer|in:0,1,2',
         ]);
+        
+        if ($request->input('name') === 'Scenes') {
+            return redirect()
+                ->back()
+                ->withErrors('error', 'This name is invalid.');
+        }
 
         $folder = new Folder;
         $folder->name = $request->input('name');
@@ -37,7 +43,7 @@ class FolderController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'success')
+            ->with('success', 'Folder successfully created.')
             ->with('message', 'Folder created.');
     }
 
@@ -58,7 +64,7 @@ class FolderController extends Controller
             if (Folder::where('name', $request->input('name'))->exists()) {
                 return redirect()
                     ->back()
-                    ->withErrors('error', 'Name has been used.');
+                    ->withErrors('error', 'This name is already used.');
             }
         }
         $folder->name = $request->input('name');
@@ -66,8 +72,7 @@ class FolderController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'success')
-            ->with('message', 'Folder updated.');
+            ->with('success', 'Folder successfully updated.');
     }
 
     public function postDelete(Request $request)
@@ -95,6 +100,6 @@ class FolderController extends Controller
         $templates = $folder->assetTemplates()->when($request->input('search'), function ($query, $search) {
             return $query->where('name', 'like', "%$search%");
         })->orderBy('sequence', 'asc')->paginate(15);
-        return view('veeditor::folder.show', compact('folder', 'templates'));
+        return view('veeditor::folder.vapor-show', compact('folder', 'templates'));
     }
 }

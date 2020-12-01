@@ -1,4 +1,8 @@
 <x-veeditor::layout>
+  @push('script')
+  <script src="{{ asset('vendor/ve/js/asset-template-show.js') }}" defer></script>
+  @endpush
+  <input type="hidden" id="required-data" data-template-type="{{ $template->folder->folder_type }}">
   <div x-data="{ showModal: false, showCreateModal: false, showDeleteModal: false, assetId: '' }">
     <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -43,7 +47,7 @@
     <div class="fixed w-screen h-screen left-0 flex justify-center top-0 items-center bg-gray-500 bg-opacity-25" x-show="showModal">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg" @click.away="showDeleteModal = false; showCreateModal = false; showUpdateModal = false; showModal = false">
-          <form class="px-4 py-2 text-center container" x-show="showCreateModal" action="{{ route('ve-editor.asset.postCreate') }}" method="POST" enctype="multipart/form-data">
+          <form id="create-form" class="px-4 py-2 text-center container" x-show="showCreateModal" action="{{ route('ve-editor.asset.postCreate') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="flex-1 flex items-center my-2">
               <label for="create-file" class="w-28">File</label>
@@ -51,10 +55,10 @@
             </div>
             <div class="flex-1 flex items-center my-2">
               <label for="create-dummy" class="w-28">Dummy</label>
-              <input type="checkbox" id="create-dummy" name="dummy" class="mx-4 shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <input type="checkbox" id="create-dummy" name="dummy" class="mx-4 shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="1">
             </div>
-            <input type="hidden" name="template-id" value="{{ $template->id }}">
-            <input type="submit" value="Create" class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <input id="create-template-id" type="hidden" name="template-id" value="{{ $template->id }}">
+            <input id="create-btn" type="button" value="Create" class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           </form>
           <form class="px-4 py-2 text-center container" x-show="showDeleteModal" action="{{ route('ve-editor.asset.postDelete') }}" method="POST">
             @csrf

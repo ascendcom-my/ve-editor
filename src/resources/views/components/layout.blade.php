@@ -15,6 +15,7 @@
 
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.js" defer></script>
+        @stack('script')
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
@@ -38,6 +39,7 @@
                 <div class="py-12">
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div class="bg-white shadow-xl sm:rounded-lg">
+                            <x-veeditor::status-flash></x-veeditor::status-flash>
                             {{ $slot }}
                             <div class="px-2 pb-4">{{ $occupiedSize }} used @if(isset($maxSize))of {{ $maxSize }}@endif</div>
                         </div>

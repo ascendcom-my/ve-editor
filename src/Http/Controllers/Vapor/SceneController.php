@@ -1,7 +1,8 @@
 <?php
 
-namespace Bigmom\VeEditor\Http\Controllers;
+namespace Bigmom\VeEditor\Http\Controllers\Vapor;
 
+use Bigmom\VeEditor\Http\Controllers\Controller;
 use Bigmom\VeEditor\Models\Folder;
 use Bigmom\VeEditor\Models\Hotspot;
 use Bigmom\VeEditor\Models\Placeholder;
@@ -19,7 +20,7 @@ class SceneController extends Controller
         $scenes = Scene::when($request->input('search'), function ($query, $search) {
             return $query->where('name', 'like', "%$search%");
         })->paginate(15);
-        return view('veeditor::scene.index', compact('scenes'));
+        return view('veeditor::scene.vapor-index', compact('scenes'));
     }
 
     public function postCreate(Request $request)
@@ -27,12 +28,7 @@ class SceneController extends Controller
         $request->validate([
             'name' => 'required|string|max:191|unique:scenes,name',
             'type' => 'required|integer|min:0|max:2',
-            'file' => 'required|file',
-        ]);
-
-        config([
-            //'filesystems.disks.s3.visibility' => 'public',
-            'filesystems.disks.s3.options' => ['CacheControl' => 'max-age=315360000, no-transform, public'],
+            'key' => 'required|string|max:191',
         ]);
 
         $scene = new Scene;
@@ -42,13 +38,12 @@ class SceneController extends Controller
             $scene->extras = '{"scene": "0,0,0", "camera": "-0.84,0,-1.8", "polarRange":
                 "Math.PI/3,Math.PI/1.8", "distanceRange": "2.2,2.2"}';
         }
-        $scene->store($request->file('file'));
+        $scene->storeByKey($request->input('key'));
         $scene->save();
 
-        return redirect()
-            ->back()
-            ->with('success', 'success')
-            ->with('message', 'Scene created.');
+        return $scene->id
+            ? response()->json(['status' => 'success', 'message' => 'Scene successfully created.'])
+            : response()->json(['status' => 'error', 'message' => 'An error occured.'], 500);
     }
 
     public function postUpdate(Request $request)
@@ -64,7 +59,7 @@ class SceneController extends Controller
             if (Scene::where('name', $request->input('name'))->exists()) {
                 return redirect()
                     ->back()
-                    ->with('error', 'Name already used.');
+                    ->withErrors('Name already used.');
             }
         }
         $scene->name = $request->input('name');
@@ -74,8 +69,7 @@ class SceneController extends Controller
 
         return redirect()
             ->back()
-            ->with('success', 'success')
-            ->with('message', 'Scene updated.');
+            ->with('success', 'Scene successfully updated.');
     }
 
     public function postDelete(Request $request)

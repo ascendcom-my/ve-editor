@@ -1,6 +1,10 @@
 <x-veeditor::layout>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.min.js" integrity="sha512-ELgdXEUQM5x+vB2mycmnSCsiDZWQYXKwlzh9+p+Hff4f5LA+uf0w2pOp3j7UAuSAajxfEzmYZNOOLQuiotrt9Q==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.js" integrity="sha512-85wMDrEBH6URHnv1YFFaSFnh2Rk1wbQ4LdKrN2Km34DPwbBLJUW/bEraiLfknBXfdd9VQtB6z0DGavH100160A==" crossorigin="anonymous"></script>
+  @push('script')
+  <script src="{{ asset('vendor/ve/js/folder-show.js') }}" defer></script>
+  @endpush
+  <input type="hidden" id="required-data" data-template-type="{{ $folder->folder_type }}" data-create-asset-route="{{ route('ve-editor.asset.postCreate') }}">
   <div x-data="{ showModal: false, showCreateModal: false, showUpdateModal: false, showDeleteModal: false, name: '', templateId: '', type: '', requirement: '' }">
     <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -61,7 +65,7 @@
     <div class="fixed w-screen h-screen left-0 flex justify-center top-0 items-center bg-gray-500 bg-opacity-25" x-show="showModal">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg" @click.away="showDeleteModal = false; showCreateModal = false; showUpdateModal = false; showModal = false">
-          <form class="px-4 py-2 text-center container" x-show="showCreateModal" action="{{ route('ve-editor.asset-template.postCreate') }}" method="POST" enctype="multipart/form-data">
+          <form id="create-form" class="px-4 py-2 text-center container" x-show="showCreateModal" action="{{ route('ve-editor.asset-template.postCreate') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="flex-1 flex items-center my-2">
               <label for="create-name" class="w-28">Template Name</label>
@@ -91,8 +95,8 @@
               <label for="create-dummy" class="w-28">Dummy (Optional)</label>
               <input type="checkbox" id="create-dummy" name="dummy" class="mx-4 shadow border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
-            <input type="hidden" name="folder-id" value="{{ $folder->id }}">
-            <input type="submit" value="Create" class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <input type="hidden" id="create-folder-id" name="folder-id" value="{{ $folder->id }}">
+            <input id="create-btn" type="button" value="Create" class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           </form>
           <form class="px-4 py-2 text-center container" x-show="showUpdateModal" action="{{ route('ve-editor.asset-template.postUpdate') }}" method="POST">
             @csrf
@@ -143,46 +147,48 @@
         });
       });
       let sortBtn = document.querySelector('#sort-btn');
-      sortBtn.addEventListener('click', (evt) => {
-        sortBtn = evt.currentTarget;
-        if (sortBtn.classList.contains('sorting')) {
-          sortBtn.innerHTML = 'Sort assets';
-          sortBtn.classList.remove('bg-green-500');
-          sortBtn.classList.remove('hover:bg-green-700');
-          sortBtn.classList.add('bg-blue-500');
-          sortBtn.classList.add('hover:bg-blue-700');
-          sortBtn.classList.remove('sorting');
-          let sequence = sortable.toArray();
-          let formData = new FormData();
-          formData.append('sequence', sequence);
-          const url = "{{ route('ve-editor.asset-template.postSort') }}";
-          fetch(url, {
-            method : "POST",
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body : formData,
-            headers: {
-              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            }
-          }).then(
-            response => response.text()
-          ).then(
-            html => console.log(html)
-          ).catch(error => {
-            console.error('Error:', error);
-          });
-          sortable.destroy();
-        } else {
-          sortBtn.innerHTML = 'Save';
-          sortBtn.classList.remove('bg-blue-500');
-          sortBtn.classList.remove('hover:bg-blue-700');
-          sortBtn.classList.add('bg-green-500');
-          sortBtn.classList.add('hover:bg-green-700');
-          sortBtn.classList.add('sorting');
-          sortable = Sortable.create(document.querySelector('.sortable'));
-        }
-      });
+      if (sortBtn) {
+        sortBtn.addEventListener('click', (evt) => {
+          sortBtn = evt.currentTarget;
+          if (sortBtn.classList.contains('sorting')) {
+            sortBtn.innerHTML = 'Sort assets';
+            sortBtn.classList.remove('bg-green-500');
+            sortBtn.classList.remove('hover:bg-green-700');
+            sortBtn.classList.add('bg-blue-500');
+            sortBtn.classList.add('hover:bg-blue-700');
+            sortBtn.classList.remove('sorting');
+            let sequence = sortable.toArray();
+            let formData = new FormData();
+            formData.append('sequence', sequence);
+            const url = "{{ route('ve-editor.asset-template.postSort') }}";
+            fetch(url, {
+              method : "POST",
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              body : formData,
+              headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              }
+            }).then(
+              response => response.text()
+            ).then(
+              html => console.log(html)
+            ).catch(error => {
+              console.error('Error:', error);
+            });
+            sortable.destroy();
+          } else {
+            sortBtn.innerHTML = 'Save';
+            sortBtn.classList.remove('bg-blue-500');
+            sortBtn.classList.remove('hover:bg-blue-700');
+            sortBtn.classList.add('bg-green-500');
+            sortBtn.classList.add('hover:bg-green-700');
+            sortBtn.classList.add('sorting');
+            sortable = Sortable.create(document.querySelector('.sortable'));
+          }
+        });
+      }
     });
 
     copy = (str) => {

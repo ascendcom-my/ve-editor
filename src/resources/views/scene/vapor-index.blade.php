@@ -1,4 +1,7 @@
 <x-veeditor::layout>
+  @push('script')
+  <script src="{{ asset('vendor/ve/js/scene.js') }}" defer></script>
+  @endpush
   <div x-data="{ showModal: false, showCreateModal: false, showUpdateModal: false, showDeleteModal: false, name: '', type: '', sceneId: '' }">
     <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -47,7 +50,7 @@
     <div class="fixed w-screen h-screen left-0 flex justify-center top-0 items-center bg-gray-500 bg-opacity-25" x-show="showModal">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg" @click.away="showCreateModal = false; showDeleteModal = false; showUpdateModal = false; showModal = false">
-          <form class="px-4 py-2 text-center container" x-show="showCreateModal" action="{{ route('ve-editor.scene.postCreate') }}" method="POST" enctype="multipart/form-data">
+          <form class="px-4 py-2 text-center container" id="create-form" x-show="showCreateModal" action="{{ route('ve-editor.scene.postCreate') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="flex-1 flex items-center my-2">
               <label for="create-name" class="w-28">Name</label>
@@ -69,7 +72,7 @@
               <label for="create-file" class="w-28">File</label>
               <input type="file" id="create-file" name="file" class="mx-4 flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
-            <input type="submit" value="Create" class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <input id="create-btn" type="button" value="Create" class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           </form>
           <form class="px-4 py-2 text-center container" x-show="showUpdateModal" action="{{ route('ve-editor.scene.postUpdate') }}" method="POST">
             @csrf

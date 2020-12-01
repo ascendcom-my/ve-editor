@@ -2,7 +2,7 @@
   <div x-data="{ showModal: false, showUpdateModal: false, showDeleteModal: false, name: '', folderId: '' }">
     <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        {{ __('VE Editor - Folder') }} ({{request()->input('folder-type') ? 'Content Asset' : 'Static Asset'}})
+        {{ __('VE Editor - Folder') }} ({{ \Bigmom\VeEditor\Models\Folder::getTypeName(request()->input('folder-type')) }})
     </h2>
     </x-slot>
 

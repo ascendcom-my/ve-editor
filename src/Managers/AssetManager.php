@@ -93,7 +93,9 @@ class AssetManager
         $sizeLimit = config('ve.size-limit');
 
         if ($sizeLimit) {
-            $fileSize = $uploadedFile->getSize();
+            if (!is_int($uploadedFile)) {
+                $fileSize = $uploadedFile->getSize();
+            }
             $occupiedSize = $this->getOccupiedSize;
 
             $newSize = $occupiedSize + $fileSize;

@@ -34,12 +34,29 @@ class Asset extends Model
         config(config('ve.config'));
         $options = ['disk' => config('ve.storage')];
         if (AssetTemplate::find($this->asset_template_id)->folder->folder_type === 2) {
-            $options['ContentDisposition'] = 'attachment';
+            $options['ContentDisposition'] = 'attachment; filename="' . $file->getClientOriginalName() . '"';
         }
 
         $this->path = $file->storePublicly('assets', $options);
 
-        $this->updateSize($file);
+        $this->addSize($file);
+
+        return $this->path;
+    }
+
+    public function storeByKey($key)
+    {
+        if (AssetManager::checkSizeLimit(Storage::disk('s3')->getSize($key)) === false) {
+            return false;
+        }
+
+        $newKey = str_replace('tmp/', 'assets/', $key);
+
+        Storage::disk('s3')->copy($key, $newKey);
+
+        $this->path = $newKey;
+        
+        $this->addSize(Storage::disk('s3')->size($newKey));
 
         return $this->path;
     }
@@ -50,15 +67,26 @@ class Asset extends Model
             $disk = config('ve.storage');
         }
 
+        $this->reduceSize(Storage::disk($disk)->size($this->path));
+
         Storage::disk($disk)->delete($this->path);
 
         return $this;
     }
 
-    public function updateSize($file)
+    public function addSize($file)
     {
-        $this->size = $file->getSize();
+        if (is_int($file)) {
+            $this->size = $file;
+        } else {
+            $this->size = $file->getSize();
+        }
         Cache::put('occupied-size', AssetManager::getOccupiedSize() + $this->size);
         return true;
+    }
+
+    public function reduceSize($size)
+    {
+        Cache::put('occupied-size', AssetManager::getOccupiedSize() - $size);
     }
 }

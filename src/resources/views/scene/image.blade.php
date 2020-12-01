@@ -9,7 +9,7 @@
   <script src="{{ asset('vendor/ve/js/fixed-ratio.js') }}"></script>
   <script src="{{ asset('vendor/ve/js/scene-image-editor.js') }}"></script>
   <script>
-    window.scene = {!! $scene->append('url') !!};
+    window.scene = {!! $scene !!};
   </script>
 </head>
 <body>

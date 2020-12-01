@@ -1,6 +1,6 @@
 <?php
 
-namespace Bigmom\VeEditor\Http\Controllers;
+namespace Bigmom\VeEditor\Http\Controllers\Vapor;
 
 use Bigmom\VeEditor\Http\Controllers\Controller;
 use Bigmom\VeEditor\Facades\Asset as AssetManager;
@@ -17,8 +17,6 @@ class AssetTemplateController extends Controller
             'name' => 'required|string|max:191',
             'type' => 'required|integer',
             'requirement' => 'required|string|max:191',
-            'file' => 'nullable|file',
-            'dummy' => 'nullable',
             'folder-id' => 'required|integer|exists:folders,id'
         ]);
 
@@ -36,30 +34,9 @@ class AssetTemplateController extends Controller
         $template->sequence = AssetTemplate::where('folder_id', $template->folder_id)->count();
         $template->save();
 
-        if ($request->has('file')) {
-            $asset = new Asset;
-            $asset->asset_template_id = $template->id;
-            $path = $asset->store($request->file('file'));
-
-            if ($path === false) {
-                return redirect()
-                    ->back()
-                    ->withErrors('error', 'File limit exceeded.');
-            }
-    
-            if ($request->has('dummy') && $request->input('dummy')) {
-                $asset->dummy = 1;
-            } else {
-                $asset->dummy = 0;
-            }
-    
-            $asset->save();
-        }
-
-        return redirect()
-            ->back()
-            ->with('success', 'success')
-            ->with('message', 'Asset template created.');
+        return $template->id
+            ? response()->json(['status' => 'success', 'message' => 'Asset template successfully created.', 'template-id' => $template->id])
+            : response()->json(['status' => 'error', 'message' => 'An error occured.'], 500);
     }
 
     public function postUpdate(Request $request)
@@ -72,12 +49,12 @@ class AssetTemplateController extends Controller
         ]);
 
         $template = AssetTemplate::find($request->input('template-id'));
-        if ($template->id !== $request->input('name')) {
+        if ($template->name !== $request->input('name')) {
             if ($template->folder->assetTemplates()->where('name', $request->input('name'))->exists()) {
                 return redirect()
                     ->back()
-                    ->withErrors('error', 'Name already used inside this folder.');
-            }
+                    ->withErrors('Name already used inside this folder.');
+            } 
         }
         $template->name = $request->input('name');
         $template->file_type = $request->input('type');
@@ -114,7 +91,7 @@ class AssetTemplateController extends Controller
     public function getShow(AssetTemplate $template)
     {
         $assets = $template->assets()->orderBy('updated_at', 'desc')->paginate(15);
-        return view('veeditor::asset-template.show', compact('template', 'assets'));
+        return view('veeditor::asset-template.vapor-show', compact('template', 'assets'));
     }
 
     public function postSort(Request $request)

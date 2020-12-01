@@ -5,6 +5,7 @@ namespace Bigmom\VeEditor\Providers;
 use Bigmom\VeEditor\Commands\PullVeEditor;
 use Bigmom\VeEditor\Facades\Asset;
 use Bigmom\VeEditor\Managers\AssetManager;
+use Bigmom\VeEditor\Services\Validate as ValidateService;
 use Bigmom\VeEditor\View\Components\Layout;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
