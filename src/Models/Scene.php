@@ -16,7 +16,7 @@ class Scene extends Model
         'Scene 2D (Video)',
     ];
 
-    protected $fillable = ['id', 'name', 'type', 'path', 'extras', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'name', 'type', 'path', 'extras', 'asset_template_id', 'created_at', 'updated_at'];
 
     public function hotspots()
     {
