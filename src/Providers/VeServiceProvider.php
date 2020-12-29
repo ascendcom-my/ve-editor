@@ -39,6 +39,10 @@ class VeServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/ve.php' => config_path('ve.php'),
         ]);
+    
+        $this->publishes([
+            __DIR__.'/../stubs/VeServiceProvider.stub' => app_path('Providers/VeServiceProvider.php'),
+        ]);
 
         $this->loadRoutesFrom(__DIR__.'/../routes.php');
 
@@ -87,20 +91,8 @@ class VeServiceProvider extends ServiceProvider
             return $svg;
         });
 
-        $this->gate();
-    }
-
-    /**
-     * Register the VE Editor gate.
-     *
-     * This gate determines who can access VE Editor in non-local environments.
-     *
-     * @return void
-     */
-    protected function gate()
-    {
-        Gate::define('accessVeEditor', function ($user = null) {
-            return in_array(optional($user)->email, config('ve.allowed-users'));
-        });
+        $this->publishes([
+            __DIR__.'/../resources/views/auth' => resource_path('views/vendor/bigmom/hook/auth'),
+        ]);
     }
 }

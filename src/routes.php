@@ -1,5 +1,6 @@
 <?php
 
+use Bigmom\VeEditor\Http\Controllers\AuthController;
 use Bigmom\VeEditor\Http\Controllers\API\ContentController as APIController;
 use Bigmom\VeEditor\Http\Controllers\AssetController;
 use Bigmom\VeEditor\Http\Controllers\AssetTemplateController;
@@ -15,8 +16,8 @@ use Bigmom\VeEditor\Http\Controllers\Vapor\SignedStorageUrlController;
 use Bigmom\VeEditor\Http\Middleware\EnsureUserIsAuthorized;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('ve-editor')->name('ve-editor.')->group(function () {
-    Route::middleware(['web', 'auth.basic:ve-editor', EnsureUserIsAuthorized::class])->group(function () {
+Route::prefix('ve-editor')->name('ve-editor.')->middleware(['web'])->group(function () {
+    Route::middleware([\Bigmom\VeEditor\Http\Middleware\Authenticate::class, EnsureUserIsAuthorized::class])->group(function () {
         if (config('ve.main')) {
             if (config('vapor.redirect_to_root') === null) {
                 Route::get('/', function () {
@@ -90,4 +91,7 @@ Route::prefix('ve-editor')->name('ve-editor.')->group(function () {
             Route::get('/pull', [APIController::class, 'getContent'])->name('getContent');
         }
     });
+    
+    Route::get('/login', [AuthController::class, 'getLogin'])->name('getLogin');
+    Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
 });
