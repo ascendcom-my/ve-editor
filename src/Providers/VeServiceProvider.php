@@ -92,7 +92,7 @@ class VeServiceProvider extends ServiceProvider
         });
 
         $this->publishes([
-            __DIR__.'/../resources/views/auth' => resource_path('views/vendor/bigmom/hook/auth'),
+            __DIR__.'/../resources/views/auth' => resource_path('views/vendor/bigmom/ve-editor/auth'),
         ]);
     }
 }
