@@ -2,6 +2,7 @@
 
 namespace Bigmom\VeEditor\Managers;
 
+use Bigmom\VeEditor\Facades\Scene as SceneManager;
 use Bigmom\VeEditor\Models\Asset;
 use Bigmom\VeEditor\Models\AssetTemplate;
 use Bigmom\VeEditor\Models\Folder;
@@ -22,17 +23,22 @@ class AssetManager
         $asset = $keys[1] ?? false;
         if (!$asset) throw new \Exception('No file specified for asset');
 
-        $template = AssetTemplate::where('name', $keys[1])->whereHas('folder', function ($q) use ($keys) {
-            $q->where('name', $keys[0]);
-        })->first();
+        // $template = AssetTemplate::where('name', $keys[1])->whereHas('folder', function ($q) use ($keys) {
+        //     $q->where('name', $keys[0]);
+        // })->first();
+        
+        $template = Cache::get("ve-assettemplate-{$keys[0]}-{$keys[1]}");
+        if (!$template) {
+            $template = AssetTemplate::where('name', $keys[1])->whereHas('folder', function ($q) use ($keys) {
+                $q->where('name', $keys[0]);
+            })->first();
+        }
         
         if (!$template) {
             return null;
         }
 
-        $asset = $template->assets()->latest()->first();
-
-        return $asset ? $asset->url : null;
+        return $template->cached_url ?: $template->url;
     }
 
     public function sort($sequence)
@@ -85,6 +91,10 @@ class AssetManager
             Scene::create($scene);
         }
 
+        Cache::flush();
+        SceneManager::cacheAll();
+        AssetManager::cacheAll();
+
         return true;
     }
 
@@ -120,5 +130,13 @@ class AssetManager
 
             return $occupiedSize;
         });
+    }
+
+    public function cacheAll()
+    {
+        foreach (AssetTemplate::get() as $assetTemplate) {
+            $assetTemplate->cached_url = $assetTemplate->url;
+            Cache::put("ve-assettemplate-{$assetTemplate->folder->name}-{$assetTemplate->name}", $assetTemplate);
+        }
     }
 }

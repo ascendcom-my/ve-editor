@@ -5,6 +5,7 @@ namespace Bigmom\VeEditor\Providers;
 use Bigmom\VeEditor\Commands\PullVeEditor;
 use Bigmom\VeEditor\Facades\Asset;
 use Bigmom\VeEditor\Managers\AssetManager;
+use Bigmom\VeEditor\Managers\SceneManager;
 use Bigmom\VeEditor\Services\Validate as ValidateService;
 use Bigmom\VeEditor\View\Components\Layout;
 use Illuminate\Support\Facades\Blade;
@@ -66,6 +67,10 @@ class VeServiceProvider extends ServiceProvider
 
         $this->app->singleton('asset', function ($app) {
             return new AssetManager;
+        });
+
+        $this->app->singleton('scene', function ($app) {
+            return new SceneManager;
         });
 
         $this->app->singleton('sasset', function () {
