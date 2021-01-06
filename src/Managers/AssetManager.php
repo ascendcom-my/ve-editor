@@ -91,9 +91,11 @@ class AssetManager
             Scene::create($scene);
         }
 
-        Cache::flush();
+        SceneManager::removeObsoleteCache();
+        $this->removeObsoleteCache();
+
         SceneManager::cacheAll();
-        AssetManager::cacheAll();
+        $this->cacheAll();
 
         return true;
     }
@@ -134,9 +136,33 @@ class AssetManager
 
     public function cacheAll()
     {
+        $assetTemplateKeys = [];
         foreach (AssetTemplate::get() as $assetTemplate) {
             $assetTemplate->cached_url = $assetTemplate->url;
-            Cache::put("ve-assettemplate-{$assetTemplate->folder->name}-{$assetTemplate->name}", $assetTemplate);
+            $key = "ve-assettemplate-{$assetTemplate->folder->name}-{$assetTemplate->name}";
+            Cache::put($key, $assetTemplate);
+            array_push($assetTemplateKeys, $key);
         }
+        Cache::put('ve-keys-assettemplate', $assetTemplateKeys);
+    }
+
+    public function removeObsoleteCache()
+    {
+        $keys = Cache::get('ve-keys-assettemplate');
+        if ($keys) {
+            foreach ($keys as $key) {
+                $cacheTemplate = Cache::get($key);
+                if ($cacheTemplate) {
+                    $dbTemplate = AssetTemplate::where('name', $cacheTemplate->name)->whereHas('folder', function ($q) use ($cacheTemplate) {
+                        $q->where('name', $cacheTemplate->folder->name);
+                    })->first();
+
+                    if (!$dbTemplate) {
+                        Cache::forget($key);
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

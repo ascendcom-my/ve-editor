@@ -20,8 +20,30 @@ class SceneManager
 
     public function cacheAll()
     {
+        $sceneKeys = [];
         foreach (Scene::get() as $scene) {
-            Cache::put("ve-scene-{$scene->name}", $scene);
+            $key = "ve-scene-{$scene->name}";
+            Cache::put($key, $scene);
+            array_push($sceneKeys, $key);
         }
+        Cache::put('ve-keys-scene', $sceneKeys);
+    }
+
+    public function removeObsoleteCache()
+    {
+        $keys = Cache::get('ve-keys-scene');
+        if ($keys) {
+            foreach ($keys as $key) {
+                $cacheScene = Cache::get($key);
+                if ($cacheScene) {
+                    $dbScene = Scene::where('name', $cacheScene->name)->first();
+
+                    if (!$dbScene) {
+                        Cache::forget($key);
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
