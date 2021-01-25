@@ -12,17 +12,37 @@ use Bigmom\VeEditor\Http\Controllers\Vapor\AssetTemplateController as VaporAsset
 use Bigmom\VeEditor\Http\Controllers\Vapor\ContentController as VaporContentController;
 use Bigmom\VeEditor\Http\Controllers\Vapor\FolderController as VaporFolderController;
 use Bigmom\VeEditor\Http\Controllers\Vapor\SceneController as VaporSceneController;
+use Bigmom\Auth\Http\Middleware\Authenticate;
 use Bigmom\VeEditor\Http\Controllers\Vapor\SignedStorageUrlController;
-use Bigmom\VeEditor\Http\Middleware\EnsureUserIsAuthorized;
+use Bigmom\Auth\Http\Middleware\EnsureUserIsAuthorized;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('ve-editor')->name('ve-editor.')->middleware(['web'])->group(function () {
-    Route::middleware([\Bigmom\VeEditor\Http\Middleware\Authenticate::class, EnsureUserIsAuthorized::class])->group(function () {
+    Route::middleware([Authenticate::class, EnsureUserIsAuthorized::class.':ve-editor-access'])->group(function () {
         if (config('ve.main')) {
+
+            // Redirect routes
+            Route::get('/', function () {
+                return redirect()->route('ve-editor.scene.getIndex');
+            })->name('home');
+            Route::get('/static-asset', function () {
+                return redirect()->route('ve-editor.folder.getIndex', [
+                    'folder-type' => 0
+                ]);
+            })->name('staticAsset');
+            Route::get('/content-asset', function () {
+                return redirect()->route('ve-editor.folder.getIndex', [
+                    'folder-type' => 1
+                ]);
+            })->name('contentAsset');
+            Route::get('/downloadable', function () {
+                return redirect()->route('ve-editor.folder.getIndex', [
+                    'folder-type' => 2
+                ]);
+            })->name('downloadable');
+            // End redirect routes
+
             if (config('vapor.redirect_to_root') === null) {
-                Route::get('/', function () {
-                    return redirect()->route('ve-editor.scene.getIndex');
-                })->name('home');
                 Route::prefix('folder')->name('folder.')->group(function () {
                     Route::get('/', [FolderController::class, 'getIndex'])->name('getIndex');
                     Route::post('/create', [FolderController::class, 'postCreate'])->name('postCreate');
@@ -50,9 +70,6 @@ Route::prefix('ve-editor')->name('ve-editor.')->middleware(['web'])->group(funct
                     Route::post('{scene}/manage', [SceneController::class, 'postManage'])->name('postManage');
                 });
             } else {
-                Route::get('/', function () {
-                    return redirect()->route('ve-editor.scene.getIndex');
-                })->name('home');
                 Route::prefix('folder')->name('folder.')->group(function () {
                     Route::get('/', [VaporFolderController::class, 'getIndex'])->name('getIndex');
                     Route::post('/create', [VaporFolderController::class, 'postCreate'])->name('postCreate');

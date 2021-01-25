@@ -22,48 +22,42 @@ class VeServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        config([
-            'auth.guards.ve-editor' => array_merge([
-                'driver' => config('ve.guard.driver', 'session'),
-                'provider' => config('ve.guard.provider', 'users'),
-            ], config('auth.guards.ve-editor', [])),
-        ]);
-    }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->publishes([
-            __DIR__.'/../config/ve.php' => config_path('ve.php'),
-        ]);
-    
-        $this->publishes([
-            __DIR__.'/../stubs/VeServiceProvider.stub' => app_path('Providers/VeServiceProvider.php'),
-        ]);
-
-        $this->loadRoutesFrom(__DIR__.'/../routes.php');
-
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'veeditor');
-
-        View::composer(
-            'veeditor::*', 'Bigmom\VeEditor\View\Composers\SizeComposer'
-        );
-
-        $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/ve'),
-        ], 'public');
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
-                PullVeEditor::class,
-            ]);
+        $routes = [];
+        if (config('ve.main')) {
+            $routes = [
+                [
+                    'title' => 'Scene',
+                    'name' => 've-editor.scene.getIndex',
+                    'permission' => 've-editor-manage',
+                ],
+                [
+                    'title' => 'Static Assets',
+                    'name' => 've-editor.staticAsset',
+                    'permission' => 've-editor-manage'
+                ],
+                [
+                    'title' => 'Content Asset',
+                    'name' => 've-editor.contentAsset',
+                    'permission' => 've-editor-manage'
+                ],
+                [
+                    'title' => 'Downloadable',
+                    'name' => 've-editor.downloadable',
+                    'permission' => 've-editor-manage'
+                ],
+            ];
         }
+
+        config([
+            'bigmom-auth.packages' => array_merge([[
+                'name' => 'VE Editor',
+                'description' => 'Virtual event editor with a simple asset manager.',
+                'routes' => $routes,
+                'permissions' => [
+                    've-editor-manage',
+                ]
+            ]], config('bigmom-auth.packages', []))
+        ]);
 
         $this->app->singleton('asset', function ($app) {
             return new AssetManager;
@@ -81,6 +75,38 @@ class VeServiceProvider extends ServiceProvider
                 return $url;
             };
         });
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/ve.php' => config_path('ve.php'),
+            ]);
+
+            $this->publishes([
+                __DIR__.'/../public' => public_path('vendor/ve'),
+            ], 'public');
+
+            $this->commands([
+                PullVeEditor::class,
+            ]);
+        }
+
+        $this->loadRoutesFrom(__DIR__.'/../routes.php');
+
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'veeditor');
+
+        View::composer(
+            'veeditor::*', 'Bigmom\VeEditor\View\Composers\SizeComposer'
+        );
 
         Blade::directive('asset', function ($path) {
             $path = substr($path, 1, -1);
@@ -95,9 +121,5 @@ class VeServiceProvider extends ServiceProvider
             $svg = preg_replace('/\<\!\-\-(.*)--\>/', '', $svg);
             return $svg;
         });
-
-        $this->publishes([
-            __DIR__.'/../resources/views/auth' => resource_path('views/vendor/bigmom/ve-editor/auth'),
-        ]);
     }
 }
