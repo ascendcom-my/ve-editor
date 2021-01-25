@@ -27,13 +27,12 @@ A placeholder only stores a url field. Do whatever you want with it really.
 `php artisan vendor:publish`
 `php artisan migrate`
 
+If [bigmom/auth](https://packagist.org/packages/bigmom/auth) has not been published yet, please do so.
+
 ## config
 
 - `main` = Set whether this machine should be main machine.
 - `pull_url` = The host machine to pull the data from.
-- `guard` = VE Editor uses its own guard, `ve-editor`. By default, this guard uses `session` driver and `users` provider. You can set different values for the guard in here.
-- `restrict_usage` = Only allow certain users to access VE Editor.
-- `allowed_users` = Specify the emails of the users that can access VE Editor here.
 - `api_username` && `api_password` = Allowed user on the host machine.
 - `config` = Set running config here. Must be in an associative array format.
 
