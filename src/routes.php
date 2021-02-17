@@ -103,7 +103,7 @@ Route::prefix('ve-editor')->name('ve-editor.')->middleware(['web'])->group(funct
             Route::post('/pull', [ContentController::class, 'pull'])->name('pull');
         }
     });
-    Route::middleware(['api', 'auth.basic:ve-editor', EnsureUserIsAuthorized::class])->prefix('api')->name('api.')->group(function () {
+    Route::middleware(['api', 'auth.basic:bigmom', EnsureUserIsAuthorized::class.':ve-editor-access'])->prefix('api')->name('api.')->group(function () {
         if (config('ve.main')) {
             Route::get('/pull', [APIController::class, 'getContent'])->name('getContent');
         }
