@@ -52,6 +52,7 @@ class SceneController extends Controller
             'name' => 'required|string|max:191',
             'type' => 'required|integer|min:0|max:2',
             'scene-id' => 'required|integer|exists:scenes,id',
+            'key' => 'required|string|max:191',
         ]);
 
         $scene = Scene::find($request->input('scene-id'));
@@ -64,6 +65,7 @@ class SceneController extends Controller
         }
         $scene->name = $request->input('name');
         $scene->type = $request->input('type');
+        $scene->storeByKey($request->input('key'));
 
         $scene->save();
 

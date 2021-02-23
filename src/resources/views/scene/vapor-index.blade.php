@@ -93,8 +93,12 @@
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
               </div>
             </div>
-            <input type="hidden" name="scene-id" x-model="sceneId">
-            <input type="submit" value="Update" class="cursor-pointer mx-2 w-auto bg-yellow-300 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <div class="flex-1 flex items-center my-2">
+              <label for="update-file" class="w-28">File</label>
+              <input type="file" id="update-file" name="file" class="mx-4 flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+            <input type="hidden" id="update-scene-id" name="scene-id" x-model="sceneId">
+            <button type="button" class="cursor-pointer mx-2 w-auto bg-yellow-300 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Update</button>
           </form>
           <form class="px-4 py-2 text-center container" x-show="showDeleteModal" action="{{ route('ve-editor.scene.postDelete') }}" method="POST">
             @csrf
