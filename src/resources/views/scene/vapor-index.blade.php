@@ -74,7 +74,7 @@
             </div>
             <input id="create-btn" type="button" value="Create" class="cursor-pointer mx-2 my-2 w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
           </form>
-          <form class="px-4 py-2 text-center container" x-show="showUpdateModal" action="{{ route('ve-editor.scene.postUpdate') }}" method="POST">
+          <form id="update-form" class="px-4 py-2 text-center container" x-show="showUpdateModal" action="{{ route('ve-editor.scene.postUpdate') }}" method="POST">
             @csrf
             <p>Warning: Changing anything after developer has started using this scene will break the program!</p>
             <div class="flex-1 flex items-center my-2">
